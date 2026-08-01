@@ -12,7 +12,7 @@ class Expense(BaseModel):
     amount: float 
     category: str 
     date: date 
-expense: List[Expense] = []
+expenses: List[Expense] = []
 
 @app.get("/")
 def home ():
@@ -23,9 +23,9 @@ def home ():
 @app.post("/expenses")
 def add_expense(expense: Expense):
     for exp in expenses:
-        if exp.id == expnese.id:
+        if exp.id == expense.id:
             raise HTTPException(status_code=400,detail="Expense ID is already Exists")
-    expense.append(expense)
+    expenses.append(expense)
     return{
         "message":"Expense added successfully",
         "expense":expense
@@ -52,7 +52,7 @@ def get_expenses_by_category(category:str):
 def overall_total():
     total=sum(exp.amount for exp in expenses)
     return{
-        "oveall_total": total
+        "overall_total": total
     }
 
 #Category-Wise Total
@@ -60,11 +60,11 @@ def overall_total():
 def category_total():
     totals={}
     for expense in expenses:
-        totals[expenses.category]=totals.get(expense.category,0)+expense.amount
+        totals[expense.category]=totals.get(expense.category,0)+expense.amount
     return totals
 
 #Delete Expense
-@app.delete("expenses/{expense_id}")
+@app.delete("/expenses/{expense_id}")
 def delete_expense(expense_id:int):
     for expense in expenses:
         if expense.id==expense_id:
